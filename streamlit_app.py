@@ -56,6 +56,7 @@ if uploaded_file:
 
                 soil_translation = {
                     "Alluvial soil": "تربة فيضية",
+                    "Alluvial soil": "تربة الرسوبية",
                     "Black Soil": "تربة سوداء",
                     "Clay soil": "تربة طينية",
                     "Red soil": "تربة حمراء",
