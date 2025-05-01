@@ -26,7 +26,7 @@ st.markdown(
 )
 
 
-st.markdown("<h1 style='text-align:center; color:#4d0d0d;'>🌱 ازرع نباتك !!</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center; color:#4d0d0d;'>🌱 ازرع نبتتك !!</h1>", unsafe_allow_html=True)
 
 
 st.markdown("### 📸 أرفع صورة التربة:")
