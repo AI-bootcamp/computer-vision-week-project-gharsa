@@ -16,7 +16,7 @@ app.add_middleware(
 )
 
 # Load trained Keras model
-model = load_model("/Users/mrhasson44/Desktop/tic tac toe/computer-vision-week-project-gharsa/efficientnet_model_soils1.keras")
+model = load_model("/Users/mrhasson44/Desktop/tic tac toe/computer-vision-week-project-gharsa/efficientnet_model_soils2.keras")
 img_size = (224, 224)
 
 # Your class names manually listed or loaded
