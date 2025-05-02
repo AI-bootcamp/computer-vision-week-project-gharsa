@@ -41,7 +41,7 @@ if uploaded_file:
             
             try:
                 response = requests.post(
-                    "http://127.0.0.1:8001/predict",  
+                    "http://127.0.0.1:8000/predict",  
                     files={"file": uploaded_file.getvalue()}
                 )
             except Exception as e:

@@ -5,6 +5,8 @@ import requests
 from PIL import Image
 import base64
 import difflib
+import io
+
 
 
 with open("frontend/images/back.png", "rb") as f:
@@ -46,7 +48,7 @@ if uploaded_file:
             # 2. أرسل الصورة إلى FastAPI وانتظر JSON بالـ class + confidence + base64 image
             try:
                 resp = requests.post(
-                    "http://127.0.0.1:8001/detect",
+                    "http://127.0.0.1:8000/detect",
                     files={"file": file_bytes}
                 )
                 resp.raise_for_status()
@@ -60,6 +62,3 @@ if uploaded_file:
             img_bytes = base64.b64decode(data["image"])
             annotated = Image.open(io.BytesIO(img_bytes))
             st.image(annotated, caption=f"🔬 تشخيص: {data['class']}", use_column_width=True)
-
-            # 4. عرض نسبة الثقة
-            st.markdown(f"**الثقة:** {data['confidence'] * 100:.1f}%")

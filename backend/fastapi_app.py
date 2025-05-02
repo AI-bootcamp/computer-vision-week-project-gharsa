@@ -2,11 +2,12 @@ from fastapi import FastAPI, UploadFile, File, Query
 from fastapi.middleware.cors import CORSMiddleware
 from tensorflow.keras.models import load_model
 from fastapi.responses import StreamingResponse, JSONResponse
+from ultralytics import YOLO
 import tensorflow as tf
 import numpy as np
+import base64
 import os
 import cv2
-import io
 
 app = FastAPI()
 
@@ -18,8 +19,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load trained Keras model
-model = load_model("backend/models/efficientnet_model_soils2.keras")
+# Load trained soil classification Keras model and YOLO disease detection model
+model_soil = load_model("backend/models/efficientnet_model_soils2.keras")
+model_yolo = YOLO("backend/models/yolov8s_custom.pt")
+
 img_size = (224, 224)
 
 # Your class names manually listed or loaded
@@ -33,7 +36,7 @@ async def predict(file: UploadFile = File(...)):
     img = tf.keras.applications.efficientnet.preprocess_input(img)
     img = tf.expand_dims(img, 0)
 
-    preds = model.predict(img)
+    preds = model_soil.predict(img)
     class_index = int(np.argmax(preds))
     class_name = class_names[class_index]
     confidence = float(np.max(preds))
@@ -48,7 +51,7 @@ async def detect(file: UploadFile = File(...)):
     photo = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
     # 2) inference
-    results = model(photo)
+    results = model_yolo(photo)
     res = results[0]
 
     # 3) دمج spot/rot → rot-spot
