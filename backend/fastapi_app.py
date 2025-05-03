@@ -1,19 +1,13 @@
 from fastapi import FastAPI, UploadFile, File, Query
 from fastapi.middleware.cors import CORSMiddleware
-from tensorflow import keras
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 from fastapi.responses import StreamingResponse, JSONResponse
 from ultralytics import YOLO
 import tensorflow as tf
 import numpy as np
+import base64
 import os
 import cv2
-import base64
-
-
-model_yolo = YOLO("./models/yolov8s_custom.pt")
-
-img_size = (224, 224)
 
 app = FastAPI()
 
@@ -25,10 +19,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load trained Keras model
-script_dir = os.path.dirname(os.path.abspath(__file__))
-model_path = os.path.join(script_dir,'models', "efficientnet_model_soils2.keras")
-model = load_model(model_path, compile=False)
+# Load trained soil classification Keras model and YOLO disease detection model
+model_soil = load_model("backend/models/efficientnet_model_soils2.keras")
+model_yolo = YOLO("backend/models/yolov8s_custom.pt")
+
 img_size = (224, 224)
 
 # Your class names manually listed or loaded
@@ -42,13 +36,12 @@ async def predict(file: UploadFile = File(...)):
     img = tf.keras.applications.efficientnet.preprocess_input(img)
     img = tf.expand_dims(img, 0)
 
-    preds = model.predict(img)
+    preds = model_soil.predict(img)
     class_index = int(np.argmax(preds))
     class_name = class_names[class_index]
     confidence = float(np.max(preds))
 
     return {"class": class_name, "confidence": confidence}
-
 
 @app.post("/detect")
 async def detect(file: UploadFile = File(...)):
@@ -74,7 +67,7 @@ async def detect(file: UploadFile = File(...)):
 
     # 5) حدد التشخيص النهائي ودرجة الثقة
     if len(class_ids) == 0:
-        predicted_class = "healthy"
+        predicted_class = "no rot-spot or burns"
         confidence = 1.0
     else:
         labels = [names[c] for c in class_ids]

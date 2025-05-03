@@ -5,24 +5,23 @@ import base64
 import difflib
 import os
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(script_dir)  # Move one level up
-background_image_path = os.path.join(parent_dir, "images", "Gharsa_background.png")
 
-font_path = os.path.join(parent_dir, "fonts", "18 Khebrat Musamim Bold.ttf")
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the absolute paths
+background_image_path = os.path.join(script_dir, "..", "images", "back.png")
+font_path = os.path.join(script_dir, "..", "fonts", "18 Khebrat Musamim Bold.ttf")
+
+# Read the background image
+with open(background_image_path, "rb") as f:
+    bg_bytes = f.read()
+bg_base64 = base64.b64encode(bg_bytes).decode()
 
 # Read the font file
 with open(font_path, "rb") as font_file:
     font_base64 = base64.b64encode(font_file.read()).decode()
 
-    
-with open(background_image_path, "rb") as f:
-    bg_bytes = f.read()
-bg_base64 = base64.b64encode(bg_bytes).decode()
-
-st.markdown(
-    
-    f"""
+style = f"""
     <style>
     @font-face {{
         font-family: 'Khebrat';
@@ -56,13 +55,11 @@ st.markdown(
         margin-top: 40px;
     }}
     </style>
-    """,
-    unsafe_allow_html=True 
-
-)
+    """
+st.markdown(style, unsafe_allow_html=True)
 
 
-st.markdown("<h1 style='text-align:center; color:#4d0d0d;'>🌱 ازرع نباتك !!</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center; color:#4d0d0d;'>🌱 ازرع نبتتك !!</h1>", unsafe_allow_html=True)
 
 
 st.markdown("### 📸 أرفع صورة التربة:")
@@ -77,7 +74,7 @@ if uploaded_file:
             
             try:
                 response = requests.post(
-                    "http://127.0.0.1:8001/predict",  
+                    "http://127.0.0.1:8000/predict",  
                     files={"file": uploaded_file.getvalue()}
                 )
             except Exception as e:

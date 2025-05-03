@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 fastapi
 uvicorn[standard]
 tensorflow
@@ -6,3 +7,20 @@ ultralytics
 numpy
 opencv-python
 python-multipart
+=======
+streamlit
+requests
+pillow
+numpy
+tensorflow
+keras
+scikit-learn
+matplotlib
+opencv-python
+ultralytics
+uvicorn
+fastapi
+opencv-python
+python-multipart
+base64
+>>>>>>> 90f623048e5744706be3abf500c1091b2b499346

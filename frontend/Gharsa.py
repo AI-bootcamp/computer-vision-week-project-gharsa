@@ -5,7 +5,7 @@ import base64
 script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Construct the absolute paths
-background_image_path = os.path.join(script_dir, "images", "Gharsa_background.png")
+background_image_path = os.path.join(script_dir, "images", "back.png")
 font_path = os.path.join(script_dir, "fonts", "18 Khebrat Musamim Bold.ttf")
 
 # Read the background image

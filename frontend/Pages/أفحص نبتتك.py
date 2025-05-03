@@ -10,19 +10,21 @@ import os
 
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(script_dir)  # Move one level up
-font_path = os.path.join(parent_dir, "fonts", "18 Khebrat Musamim Bold.ttf")
 
+# Construct the absolute paths
+background_image_path = os.path.join(script_dir, "..", "images", "back.png")
+font_path = os.path.join(script_dir, "..", "fonts", "18 Khebrat Musamim Bold.ttf")
 
-with open("./frontend/images/Gharsa_background.png", "rb") as f:
+# Read the background image
+with open(background_image_path, "rb") as f:
     bg_bytes = f.read()
 bg_base64 = base64.b64encode(bg_bytes).decode()
 
+# Read the font file
 with open(font_path, "rb") as font_file:
     font_base64 = base64.b64encode(font_file.read()).decode()
 
-st.markdown(
-    f"""
+style = f"""
     <style>
     @font-face {{
         font-family: 'Khebrat';
@@ -56,10 +58,8 @@ st.markdown(
         margin-top: 40px;
     }}
     </style>
-    """,
-    unsafe_allow_html=True
-)
-
+    """
+st.markdown(style, unsafe_allow_html=True)
 
 st.markdown("<h1 style='text-align:center; color:#4d0d0d;'>🌱 افحص نبتتك !!</h1>", unsafe_allow_html=True)
 
@@ -79,7 +79,7 @@ if uploaded_file:
             # 2. أرسل الصورة إلى FastAPI وانتظر JSON بالـ class + confidence + base64 image
             try:
                 resp = requests.post(
-                    "http://127.0.0.1:8001/detect",
+                    "http://127.0.0.1:8000/detect",
                     files={"file": file_bytes}
                 )
                 resp.raise_for_status()
@@ -92,4 +92,48 @@ if uploaded_file:
             data = resp.json()
             img_bytes = base64.b64decode(data["image"])
             annotated = Image.open(io.BytesIO(img_bytes))
-            st.image(annotated, caption=f"🔬 تشخيص: {data['class']}", use_container_width = True)
+
+            # show the image without caption
+            st.image(annotated, use_container_width=True)
+
+            # 2) translate class names
+            class_translation = {
+                "rot-spot": "تعفن/بقعة",
+                "no rot-spot or burns":   "لا يوجد حرق أو تعفن/بقعة",
+                "burn":      "حرق"
+            }
+            predicted = data["class"]
+            predicted_ar = class_translation.get(predicted, predicted)
+
+            # 3) big header with inline HTML (centred, large, colored)
+            st.markdown(
+                f"<h1 style='text-align:center; color:#d62828;'>🔬 التشخيص: <strong>{predicted_ar}</strong></h1>",
+                unsafe_allow_html=True
+            )
+
+            # 4) recommendations per class
+            recommendations = {
+                "تعفن/بقعة": [
+                    "✅ أزل الأجزاء المتعفنة برفق واحرص على التهوية الجيدة.",
+                    "✅ قلل من رطوبة التربة واسمح لها أن تجف قليلًا قبل الري مجددًا.",
+                    "✅ استخدم مبيدًا فطريًا مناسبًا إذا استمر التعفن."
+                ],
+                "لا يوجد حرق أو تعفن/بقعة": [
+                    "🌱 نباتك بصحة جيدة! حافظ على روتين ري معتدل.",
+                    "🌱 تأكد من وصول الضوء الكافي وتجنب التعرض المباشر للشمس القوية.",
+                    "🌱 زد التسميد العضوي مرة كل شهر لتحفيز النمو."
+                ],
+                "حرق": [
+                    "🔥 قص الأوراق المحروقة لتشجيع نمو جديدة.",
+                    "🔥 انقل النبات إلى مكان أقل سطوعًا أو استخدم ستارة خفيفة.",
+                    "🔥 تجنب رَشِّ الماء على الأوراق في ساعات الظهيرة."
+                ]
+            }
+
+            recs = recommendations.get(predicted_ar)
+            if recs:
+                st.markdown("### 🌿 التوصيات المقترحة:")
+                for tip in recs:
+                    st.markdown(f"- {tip}", unsafe_allow_html=True)
+            else:
+                st.warning("⚠️ لا توجد توصيات متاحة لهذه الحالة.")
