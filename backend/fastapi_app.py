@@ -20,8 +20,8 @@ app.add_middleware(
 )
 
 # Load trained soil classification Keras model and YOLO disease detection model
-model_soil = load_model("backend/models/efficientnet_model_soils2.keras")
-model_yolo = YOLO("backend/models/yolov8s_custom.pt")
+model_soil = load_model("./models/efficientnet_model_soils2.keras")
+model_yolo = YOLO("./models/yolov8s_custom.pt")
 
 img_size = (224, 224)
 

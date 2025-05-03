@@ -38,31 +38,39 @@ style = f"""
     .custom-text {{
         font-family: 'Khebrat', sans-serif;
         font-size: 35px;
-        text-align: center;
+        text-align: right;
         margin: 30px 60px;
         line-height: 2;
     }}
     .custom-subtitle {{
         font-family: 'Khebrat', sans-serif;
-        font-size: 42px;
-        text-align: center;
+        font-size: 35px;
+        text-align: right;
         margin-top: 50px;
     }}
     .custom-title {{
         font-family: 'Khebrat', sans-serif;
         font-size: 100px;
-        text-align: center;
+        text-align: right;
         margin-top: 40px;
+    }}
+    .custom-colored-title {{
+    font-family: 'Khebrat', sans-serif;
+    font-size: 90px;
+    text-align: right;
+    direction: rtl;
+    color: #4d0d0d;
+    margin-top: 40px;
     }}
     </style>
     """
 st.markdown(style, unsafe_allow_html=True)
 
 
-st.markdown("<h1 style='text-align:center; color:#4d0d0d;'>🌱 ازرع نبتتك !!</h1>", unsafe_allow_html=True)
+st.markdown("<div class='custom-colored-title'>🌱 ازرع نبتتك !!</div>", unsafe_allow_html=True)
 
 
-st.markdown("### 📸 أرفع صورة التربة:")
+st.markdown("<div class = 'custom-subtitle'> : 📸 أرفع صورة التربة </div>", unsafe_allow_html=True)
 uploaded_file = st.file_uploader("اختر صورة", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
@@ -98,7 +106,11 @@ if uploaded_file:
                 }
                 predicted_class_ar = soil_translation.get(predicted_class, predicted_class)
 
-                st.markdown(f"<h3>🌾 نوع التربة: <b>{predicted_class_ar}</b></h3>", unsafe_allow_html=True)
+                st.markdown(f"""
+                            <div style = 'text-align: right;'>
+                            <h3>🌾 نوع التربة: <b>{predicted_class_ar}</b></h3>
+                            </div>
+                            """, unsafe_allow_html=True)
 
                 
                 recommendations_data = [
@@ -119,12 +131,16 @@ if uploaded_file:
                     matched_recs = [r for r in recommendations_data if r["soil"] == matched_soil]
 
                     if matched_recs:
-                        st.markdown("### 🌿 التوصيات المقترحة:")
+                        st.markdown("<div style = 'text-align: right;'> <h3> :🌿 التوصيات المقترحة </h3> </div>", unsafe_allow_html = True)
                         for rec in matched_recs:
-                            st.markdown(f"✅ <b>النبات:</b> {rec['plant']}", unsafe_allow_html=True)
-                            st.markdown(f" 🪴 <b>للتربة:</b> {rec['soil_tip']}", unsafe_allow_html=True)
-                            st.markdown(f" 🌸 <b>للنبات:</b> {rec['plant_tip']}", unsafe_allow_html=True)
-                            st.markdown("---")
+                            st.markdown(f"""
+                                        <div style="text-align: right;">
+                                            ✅ <b>النبات:</b> {rec['plant']}<br>
+                                            🪴 <b>للتربة:</b> {rec['soil_tip']}<br>
+                                            🌸 <b>للنبات:</b> {rec['plant_tip']}
+                                        </div>
+                                        <hr>
+                                        """, unsafe_allow_html=True)
                     else:
                         st.warning("⚠️ لا توجد توصيات لهذا النوع من التربة.")
                 else:

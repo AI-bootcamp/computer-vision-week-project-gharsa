@@ -61,7 +61,7 @@ Supported Soil Types:
 ## 👩‍💻 Team Members
 
 - Abdulaziz Alfrayan
-- Rahaf Masmali
+- Rahaf Masmli
 - Renad Alajmi
 - Abdullah Alzahrani
 - Abdulamohsen Aldughaym
