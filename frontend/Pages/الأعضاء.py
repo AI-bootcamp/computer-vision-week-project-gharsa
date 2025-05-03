@@ -2,7 +2,7 @@ import streamlit as st
 import base64
 
 
-with open("frontend/images/Gharsa_background.png", "rb") as f:
+with open("frontend/images/back.png", "rb") as f:
     bg_bytes = f.read()
 bg_base64 = base64.b64encode(bg_bytes).decode()
 
@@ -52,7 +52,7 @@ st.markdown("""
 🌱 رهف مسملي<br>
 🌱 عبدالمحسن الدغيم<br>
 🌱 رناد العجمي<br>
-🌱 عبدالعزيز الفريان<br>
+🌱 عبدالعزيز آل فريان<br>
 🌱 عبدالله الزهراني
 </div>
 """, unsafe_allow_html=True)
