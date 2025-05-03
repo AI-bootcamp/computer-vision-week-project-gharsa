@@ -3,27 +3,60 @@ import requests
 from PIL import Image
 import base64
 import difflib
+import os
 
 
-with open("frontend/images/back.png", "rb") as f:
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Construct the absolute paths
+background_image_path = os.path.join(script_dir, "..", "images", "back.png")
+font_path = os.path.join(script_dir, "..", "fonts", "18 Khebrat Musamim Bold.ttf")
+
+# Read the background image
+with open(background_image_path, "rb") as f:
     bg_bytes = f.read()
 bg_base64 = base64.b64encode(bg_bytes).decode()
 
-st.markdown(
-    f"""
+# Read the font file
+with open(font_path, "rb") as font_file:
+    font_base64 = base64.b64encode(font_file.read()).decode()
+
+style = f"""
     <style>
+    @font-face {{
+        font-family: 'Khebrat';
+        src: url("data:font/ttf;base64,{font_base64}") format('truetype');
+    }}
     .stApp {{
         background-image: url("data:image/png;base64,{bg_base64}");
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        font-family: 'Cairo', sans-serif;
+        font-family: 'Khebrat', sans-serif;
         color: #222;
     }}
+    .custom-text {{
+        font-family: 'Khebrat', sans-serif;
+        font-size: 35px;
+        text-align: center;
+        margin: 30px 60px;
+        line-height: 2;
+    }}
+    .custom-subtitle {{
+        font-family: 'Khebrat', sans-serif;
+        font-size: 42px;
+        text-align: center;
+        margin-top: 50px;
+    }}
+    .custom-title {{
+        font-family: 'Khebrat', sans-serif;
+        font-size: 100px;
+        text-align: center;
+        margin-top: 40px;
+    }}
     </style>
-    """,
-    unsafe_allow_html=True
-)
+    """
+st.markdown(style, unsafe_allow_html=True)
 
 
 st.markdown("<h1 style='text-align:center; color:#4d0d0d;'>🌱 ازرع نبتتك !!</h1>", unsafe_allow_html=True)
@@ -33,7 +66,7 @@ st.markdown("### 📸 أرفع صورة التربة:")
 uploaded_file = st.file_uploader("اختر صورة", type=["jpg", "jpeg", "png"])
 
 if uploaded_file:
-    st.image(uploaded_file, caption="🖼️ الصورة المرفوعة", use_column_width=True)
+    st.image(uploaded_file, caption="🖼️ الصورة المرفوعة", use_container_width=True)
 
     if st.button("🔍 تصنيف التربة"):
         with st.spinner("جارٍ تحليل التربة..."):

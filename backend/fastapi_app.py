@@ -67,7 +67,7 @@ async def detect(file: UploadFile = File(...)):
 
     # 5) حدد التشخيص النهائي ودرجة الثقة
     if len(class_ids) == 0:
-        predicted_class = "healthy"
+        predicted_class = "no rot-spot or burns"
         confidence = 1.0
     else:
         labels = [names[c] for c in class_ids]
