@@ -1,0 +1,15 @@
+streamlit
+requests
+pillow
+numpy
+tensorflow
+keras
+scikit-learn
+matplotlib
+opencv-python
+ultralytics
+uvicorn
+fastapi
+opencv-python
+python-multipart
+base64
