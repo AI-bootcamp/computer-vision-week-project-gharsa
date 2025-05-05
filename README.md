@@ -5,12 +5,14 @@ Gharsa (غرسة) is an AI-driven tool designed to empower agriculture enthusias
 ---
 
 ## 📋 Table of Contents
-1. [About the Project](#about-the-project)
-2. [Features](#features)
-3. [How It Works](#how-it-works)
-4. [Team Members](#team-members)
-5. [Getting Started](#getting-started)
-6. [Technologies Used](#technologies-used)
+1. [About the Project](#-about-the-project)
+2. [Features](#-features)
+3. [How It Works](#-how-it-works)
+4. [Project Structure](#-project-structure)
+5. [Getting Started](#-getting-started)
+6. [Technologies Used](#-technologies-used)
+7. [Team Members](#-team-members)
+
 
 ---
 
@@ -57,16 +59,40 @@ Supported Soil Types:
    - Get actionable insights to maintain plant health.
 
 ---
+## 📂 Project Structure
 
-## 👩‍💻 Team Members
-
-- Abdulaziz Alfrayan
-- Rahaf Masmali
-- Renad Alajmi
-- Abdullah Alzahrani
-- Abdulamohsen Aldughaym
+```text
+Gharsa/
+├── backend/                        # Backend API using FastAPI
+│   ├── fastapi_app.py             # Main FastAPI application
+│   ├── models/                    # Pre-trained models
+│   │   ├── efficientnet_model_soils2.keras
+│   │   └── yolov8s_custom.pt
+│   └── __pycache__/               # Compiled Python files
+│
+├── frontend/                      # Frontend application using Streamlit
+│   ├── Gharsa.py                  # Main Streamlit app
+│   ├── Pages/                     # Additional Streamlit pages
+│   │   ├── أزرع نبتتك.py
+│   │   ├── أفحص نبتتك.py
+│   │   └── الأعضاء.py
+│   ├── fonts/                     # Custom fonts for UI
+│   │   └── 18 Khebrat Musamim Bold.ttf
+│   ├── images/                    # Sample images for testing
+│   │   ├── burn3.jpg
+│   │   └── back.png
+│
+├── notebooks/                     # Jupyter Notebooks for experimentation
+│   ├── soil_mAP 85_EfficientNetB0.ipynb
+│   └── plant_diseases_more_adjucments.ipynb
+│
+├── README.md                      # Project documentation
+├── requirements.txt               # Python dependencies
+└── .gitignore                     # Git ignore rules
+```
 
 ---
+
 
 ## 🚀 Getting Started
 
@@ -101,3 +127,12 @@ Supported Soil Types:
 - **YOLOv8**: For leaf disease detection.
 - **OpenCV**: For image preprocessing.
 - **Python**: Core programming language.
+
+---
+## 👩‍💻 Team Members
+
+- Abdulaziz Alfrayan
+- Rahaf Masmali
+- Renad Alajmi
+- Abdullah Alzahrani
+- Abdulamohsen Aldughaym
